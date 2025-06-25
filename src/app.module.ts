@@ -60,6 +60,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { DocumentsModule } from './documents/documents.module';
 import { IngestionModule } from './ingestion/ingestion.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { IngestionModule } from './ingestion/ingestion.module';
     UsersModule,
     DocumentsModule,
     IngestionModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

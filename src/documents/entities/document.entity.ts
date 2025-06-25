@@ -14,4 +14,9 @@ export class Document {
 
   @ManyToOne(() => User, (user) => user.documents)
   owner: User;
+  @Column({ nullable: true })
+  fileKey?: string;
+
+  @Column({ nullable: true })
+  fileUrl?: string;
 }

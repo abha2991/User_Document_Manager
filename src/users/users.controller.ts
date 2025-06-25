@@ -6,6 +6,7 @@ import {
   Param,
   NotFoundException,
   Inject,
+  Patch,
 } from '@nestjs/common';
 import { IUserService } from './interfaces/user-service.interface';
 import { CreateUserDto } from './dto/create-user.dto';

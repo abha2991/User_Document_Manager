@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { USER_REPOSITORY } from './constants';
 import { IUserRepository } from './interfaces/user-repository.interface';
@@ -29,8 +29,5 @@ export class UsersServiceImpl implements IUserService {
 
   private async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
-  }
-  async findById(id: string): Promise<User | null> {
-    return this.userRepository.findById(id);
   }
 }
