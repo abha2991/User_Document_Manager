@@ -1,99 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Coding Exercise Documentation
+Introduction
+This document outlines the design, development, and deployment approach taken, along with
+instructions and examples to help you understand and test the solution.
+The focus is not only on delivering features but also on demonstrating solid software design,
+maintainability, and professional engineering practices.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+1. Design Overview
+   Object-Oriented Design & SOLID Principles
+   • The application is built using NestJS, which encourages modularity and dependency injection.
+   • Core features are separated into modules (UsersModule, DocumentsModule,
+   IngestionModule), each encapsulating its own controllers, services, and repositories.
+   • Design patterns such as Repository and Service layers are applied to separate concerns.
+   • Adheres to SOLID principles
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+2. Development Practices
+   Git Usage
+   • Commits are small, logically grouped, and well-described.
+   • Branches are used for feature development and merged via pull requests.
+   • Commit history shows incremental progress and issue resolutions.
+   Code Structure
+   • Clear folder structure following NestJS conventions (modules, controllers, services, entities).
+   • Typescript typings and interfaces ensure type safety.
+   • Environment variables are used for configuration.
+   Documentation
+   • This document provides high-level overview and deployment instructions.
+   • API endpoints are described with example requests below.
+   Testing
+   • Automated tests are implemented using Jest framework.
+   • Tests cover both unit and integration scenarios for critical services and controllers.
+   • Test files are located alongside source code, typically with .spec.ts extension.
+   How to Run Tests
+   Locally
+1. Install dependencies: npm install
+2. Run all tests using the Jest test runner: npm run test
+3. For continuous watch mode (rerun on file changes): npm run test:watch
+   In CI/CD (GitHub Actions)
+   • The workflow automatically runs tests on every push.
+   • Failed tests block deployment to ensure code reliability.
 
-## Description
+3. Technology & Concepts
+   • Frameworks: Node.js, NestJS
+   • Core Technologies: HTTP REST API, PostgreSQL database, Docker containerization
+   • Security: Basic authentication and validation implemented for user-related routes
+   • Scalability: Modular design allows extension of new features with minimal coupling
+   • Deployment: Containerized app deployed on Railway with automated GitHub Actions pipeline
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+4. Deployment Instructions
+   Prerequisites
+   • Docker installed locally (optional for local testing)
+   • Railway account (https://railway.app) for cloud deployment (already configured)
+   • GitHub repository linked for CI/CD
+   Local Setup
+1. Clone the repository:
+   git clone https://github.com/<your-github-username>/<repo-name>.git
+   cd <repo-name>
+2. Install dependencies:
+   npm install
+3. Set environment variables:
+   Create a .env file based on .env.example with your database credentials and other secrets.
+4. Run the application:
+   npm run start:dev
+   The app runs locally at http://localhost:8080.
+   Cloud Deployment on Railway
+   • The app is containerized with Docker.
+   • On every push to the main branch, GitHub Actions builds the Docker image and pushes it to
+   GitHub Container Registry.
+   • Railway pulls the latest image and deploys it automatically.
+   • Public URL:
+   https://userdocumentmanager-production-47b4.up.railway.app
+5. API Endpoints & Testing with curl
+   Below are some example curl commands to test key endpoints of the API.
 
-## Project setup
+#    **Register a User**
 
-```bash
-$ npm install
-```
+   curl -X POST https://userdocumentmanager-production-47b4.up.railway.app/auth/register \
+   -H "Content-Type: application/json" \
+   -d '{ "username": "testuser", "password": "securepassword" }
 
-## Compile and run the project
+#    **Login a User**
 
-```bash
-# development
-$ npm run start
+   curl -X POST https://userdocumentmanager-production-47b4.up.railway.app/auth/login \
+   -H "Content-Type: application/json" \
+   -d '{
+   "username": "testuser",
+   "password": "securepassword"
+   }'
+   Expected response: JSON containing JWT token
 
-# watch mode
-$ npm run start:dev
+#    **Create a Document**
 
-# production mode
-$ npm run start:prod
-```
+   Replace <your-jwt-token> with the token received from login.
+   curl -X POST https://userdocumentmanager-production-47b4.up.railway.app/documents \
+   -H "Authorization: Bearer <your-jwt-token>" \
+   -H "Content-Type: application/json" \
+   -d '{
+   "title": "My Document",
+   "content": "This is a sample document."
+   }'
 
-## Run tests
+#    ****Get Documents List****
 
-```bash
-# unit tests
-$ npm run test
+   curl -X GET https://userdocumentmanager-production-47b4.up.railway.app/documents \
+   -H "Authorization: Bearer <your-jwt-token>"
+   Delete a Document by ID
+   Replace <document-id> with the actual ID of the document to delete.
+   curl -X DELETE https://userdocumentmanager-production-
+   47b4.up.railway.app/documents/<document-id> \
+   -H "Authorization: Bearer <your-jwt-token>"
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+6. Additional Notes & Considerations
+   • Authentication uses JWT tokens.
+   • API validation ensures data integrity.
+   • Error handling returns meaningful HTTP status codes and messages.
+   • The architecture supports future scalability and feature additions.
+   • Automated tests provide confidence in code quality.
