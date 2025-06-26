@@ -30,7 +30,7 @@ export class AuthRepository {
       email,
       passwordHash: hashedPassword,
       username,
-      role: UserRole.VIEWER,
+      role: UserRole.ADMIN,
     });
     return this.userRepository.save(user);
   }

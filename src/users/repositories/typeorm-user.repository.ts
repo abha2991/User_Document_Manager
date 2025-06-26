@@ -22,4 +22,7 @@ export class TypeOrmUserRepository implements IUserRepository {
   save(user: User): Promise<User> {
     return this.repo.save(user);
   }
+  async findAll(): Promise<User[]> {
+    return this.repo.find();
+  }
 }

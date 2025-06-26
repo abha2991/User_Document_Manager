@@ -33,7 +33,11 @@ export class DocumentsService {
     const document = new Document();
     document.title = createDto.title;
     document.content = createDto.content;
-    document.owner = user;
+
+    if (!user?.['sub']) {
+      throw new Error('User ID  is missing from request');
+    }
+    document.owner = { id: user?.['sub'] } as User;
 
     if (file) {
       document.fileKey = file.key;
@@ -46,13 +50,19 @@ export class DocumentsService {
   }
 
   async findOne(id: string, user: User) {
-    const document = await this.documentsRepo.findByIdAndOwner(id, user.id);
+    const document = await this.documentsRepo.findByIdAndOwner(
+      id,
+      user?.['sub'],
+    );
     if (!document) throw new NotFoundException('Document not found');
     return document;
   }
 
   async remove(id: string, user: User) {
-    const result = await this.documentsRepo.deleteByIdAndOwner(id, user.id);
+    const result = await this.documentsRepo.deleteByIdAndOwner(
+      id,
+      user?.['sub'],
+    );
     if (result.affected === 0)
       throw new NotFoundException('Document not found');
   }

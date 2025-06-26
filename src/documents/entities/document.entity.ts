@@ -9,8 +9,8 @@ export class Document {
   @Column()
   title: string;
 
-  @Column('text')
-  content: string;
+  @Column({ nullable: true })
+  content?: string;
 
   @ManyToOne(() => User, (user) => user.documents)
   owner: User;
